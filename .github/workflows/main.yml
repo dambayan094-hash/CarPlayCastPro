@@ -17,8 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: 22
 
       - name: Install dependencies
         run: npm install
@@ -26,7 +25,10 @@ jobs:
       - name: Build web app
         run: npm run build
 
-      - name: Install Capacitor
+      - name: Add iOS platform
+        run: npx cap add ios
+
+      - name: Sync Capacitor
         run: npx cap sync ios
 
       - name: Build iOS app
@@ -46,7 +48,6 @@ jobs:
           mkdir -p Payload
           cp -R ios/App/build/Build/Products/Release-iphoneos/App.app Payload/
           zip -r CarPlayCastPro.ipa Payload
-          rm -rf Payload
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
